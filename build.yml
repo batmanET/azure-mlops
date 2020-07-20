@@ -1,0 +1,29 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    addToPath: true
+  displayName: 'Set Python Version'
+    
+
+- script: |
+    python --version 
+    python -m pip install --upgrade pip
+    pip install pytest pytest-azurepipelines
+    pip install --upgrade azureml-sdk
+  displayName: 'Dependencies Installation'
+
+- script: python jim10_detection_training_pipeline.py
+  displayName: 'ML Ops Pipeline'
